@@ -81,9 +81,9 @@ def revert_disk_snapshot(vm, disk_id, snapshot_id):
     # If vm state != "Power off"
     if get_state(vm) != 8:
         vm.poweroff()
-        wait_for_state(vm, 8)
+        wait_for_state(vm, 8, time_out=600)
     vm.client.call("vm.disksnapshotrevert", vm.id, disk_id, snapshot_id)
-    wait_for_state(vm, 8, time_out=120)
+    wait_for_state(vm, 8, time_out=600)
     vm.resume()
     wait_for_state(vm, 3)
 
@@ -92,4 +92,3 @@ def client_from_file(path="/home/denis/credentials/nebula_credentials"):
     with open(path, "r") as f:
         secret, address = (st for st in f)
         return oca.Client(secret, address)
-
